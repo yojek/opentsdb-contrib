@@ -64,18 +64,18 @@
     <maven.compile.target>1.7</maven.compile.target>
     <package-mainClass>none</package-mainClass>
 
-    <slf4j-version>1.7.5</slf4j-version>
+    <slf4j-version>1.7.7</slf4j-version>
     <logback-version>1.0.13</logback-version>
     <kafka-version>0.8.1.1</kafka-version>
-    <netty-version>3.7.0.Final</netty-version>
+    <netty-version>3.9.4.Final</netty-version>
     <guice-version>3.0</guice-version>
-    <guava-version>15.0</guava-version>
+    <guava-version>18.0</guava-version>
     <scala-version>2.10.3</scala-version>
     <zkclient-version>0.3</zkclient-version>
     <zookeeper-version>3.4.5</zookeeper-version>
     <metrics-version>2.2.0</metrics-version>
-    <snappy-version>1.0.4.1</snappy-version>
-    <async-hbase>1.4.1</async-hbase>
+    <snappy-version>1.0.5</snappy-version>
+    <async-hbase>1.6.0</async-hbase>
     <tsdb-version>1.1.0</tsdb-version>
   </properties>
 
@@ -210,6 +210,11 @@
         <version>4.11</version>
         <scope>test</scope>
       </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.4.3</version>
+        </dependency>
     </dependencies>
   </dependencyManagement>
 

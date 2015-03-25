@@ -5,8 +5,6 @@ import java.io.{FileInputStream, BufferedInputStream, File}
 import java.util.Properties
 import com.google.inject.Guice
 import net.opentsdb.kafka.consumer.modules.ConsumerModule
-import net.opentsdb.client.netty.modules.TsdbClientModule
-import net.opentsdb.client.netty.TsdbClient
 
 class Main {}
 
@@ -16,23 +14,22 @@ object Main {
   def main(args: Array[String]) {
     val props = loadProps(new File(args{0}))
 
-    val injector = Guice.createInjector(new ConsumerModule(props))
-
+    val injector = Guice.createInjector(new ConsumerModule(args{0}, props))
     logger.info("Starting TSDB Consumer...")
     val consumer = injector.getInstance(classOf[TsdbConsumer])
-    consumer.startAndWait()
+    consumer.startAsync()
 
     Runtime.getRuntime.addShutdownHook(new Thread() {
       override def run() {
         logger.info("Shutting down consumer")
-        consumer.stopAndWait()
+        consumer.stopAsync()
       }
     })
   }
 
   private def loadProps(config: File): Properties = {
     if(!config.canRead) {
-      System.err.println("Cannot open config file: " + config)
+      System.err.println("Cannot open config file: " + config.getAbsolutePath)
       System.exit(1)
     }
 

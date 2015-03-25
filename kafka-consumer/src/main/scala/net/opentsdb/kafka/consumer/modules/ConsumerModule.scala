@@ -3,26 +3,24 @@ package net.opentsdb.kafka.consumer.modules
 import com.google.inject.{Singleton, Provides, AbstractModule}
 import net.codingwell.scalaguice.ScalaModule
 import java.util.Properties
-import com.google.inject.name.{Named, Names}
-import java.util.concurrent.{LinkedBlockingQueue, ArrayBlockingQueue}
-import org.hbase.async.HBaseClient
+import com.google.inject.name. Names
 import net.opentsdb.core.TSDB
+import net.opentsdb.utils.Config
 
-class ConsumerModule(props: Properties) extends AbstractModule with ScalaModule {
+class ConsumerModule(propsPath: String, props:Properties) extends AbstractModule with ScalaModule {
   def configure() {
     Names.bindProperties(binder(), props)
   }
 
   @Provides @Singleton def provideProperties: Properties = props
+  @Provides @Singleton def providePropsPath: String = propsPath
 
-  @Provides @Singleton def provideHBaseClient(@Named("hbase.zookeeper") zk: String): HBaseClient = {
-    val client = new HBaseClient(zk)
+  @Provides @Singleton def provideTsdbClient(propsPath: String): TSDB = {
+    val config = new Config(propsPath)
 
-    client.setFlushInterval(500)
+    val client = new TSDB(config)
 
     client
   }
 
-  @Provides @Singleton def provideTsdbClient(@Named("tsdb.table") tsdbTable: String, @Named("tsdb.uidtable") uidTable: String,
-    client: HBaseClient): TSDB = new TSDB(client, tsdbTable, uidTable)
 }
